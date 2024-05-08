@@ -40,7 +40,8 @@ project "Main"
 
 	links
 	{
-		"Core"
+		"Core",
+		"Dll"
 	}
 
 	filter "system:windows"

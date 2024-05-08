@@ -26,3 +26,9 @@ inline static const int dummy##id = (Run##id(), 0);
 #define RUN_FUNCTION(id, functionName, ...) RUN_FUNCTION_HELPER(id, functionName, __VA_ARGS__)
 // Note(Jorben): NN stands for No Namespace
 #define RUN_FUNCTION_NN(id, functionName, ...) RUN_FUNCTION_NN_HELPER(id, functionName, __VA_ARGS__)
+
+
+
+#define REQUIRE_SEMICOLON(id) \
+struct id \
+{} 

@@ -2,24 +2,18 @@
 
 #include <iostream>
 
-class Test
-{
-public:
-    Test() = default;
-    virtual ~Test() = default;
-
-    inline void TEST()
-    {
-        abc = 69;
-    }
-
-private:
-
-} INSIGHT_CLASS(Test);
-
 int main(int argc, char* argv[])
 {
-    Insight::Internal::Classes& classes = Insight::Internal::ClassSymbols;
+    Insight::Dll dll = Insight::Dll("../../bin/Debug-windows/Dll/Dll.dll");
+    Insight::DefaultVariableCollection vars = {};
+    
+    for (auto& [name, internalVars] : dll.GetClasses().GetClasses())
+    {
+        void* cls = dll.CreateClass(name);
+        auto varInterfaces = dll.GetVariables(name, cls);
+
+        vars.Add(varInterfaces);
+    }
 
     return 0;
 }

@@ -126,8 +126,18 @@ namespace Insight::Internal
 	};
 
 
-
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    ///////////////////////////////////////////////////////////////////////////////////
     inline static Classes ClassSymbols = {};
+
+    extern "C"
+    {
+        inline EXPORT Insight::Internal::Classes* Insight_GetClasses()
+        {
+            return &Insight::Internal::ClassSymbols;
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////////////
 
 }
@@ -137,25 +147,27 @@ namespace Insight::Internal
 ; \
 RUN_FUNCTION(INSIGHT_CONC(name, __COUNTER__), Insight::Internal::ClassSymbols.AddClass, #name)
 
-// Export functions // TODO
+// Export functions 
 #if INSIGHT_EXPORT_CLASSES
 #define INSIGHT_CLASS(name) \
 INSIGHT_CLASS_GENERIC(name) \
 extern "C" \
 { \
-name* Insight_Create##name() \
+EXPORT name* Insight_Create##name() \
 { \
     return new name(); \
 } \
-void Insight_Delete##name(name* instance) \
+EXPORT void Insight_Delete##name(name* instance) \
 { \
     delete instance; \
 } \
-}
+} \
+REQUIRE_SEMICOLON(INSIGHT_CONC(name, __COUNTER__))
 
-// Regular functions // TODO
+// Regular functions 
 #else
 #define INSIGHT_CLASS(name) \
-INSIGHT_CLASS_GENERIC(name)
+INSIGHT_CLASS_GENERIC(name) \
+REQUIRE_SEMICOLON(INSIGHT_CONC(name, __COUNTER__))
 
 #endif
