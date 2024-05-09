@@ -24,11 +24,7 @@ project "Insight"
 
 		"src/Insight/Utils/*.h",
 		"src/Insight/Utils/*.hpp",
-		"src/Insight/Utils/*.cpp",
-
-		"src/Insight/Platforms/" .. FirstToUpper("%{cfg.system}") .. "/*.h",
-		"src/Insight/Platforms/" .. FirstToUpper("%{cfg.system}") .. "/*.hpp",
-		"src/Insight/Platforms/" .. FirstToUpper("%{cfg.system}") .. "/*.cpp"
+		"src/Insight/Utils/*.cpp"
 	}
 
 	includedirs

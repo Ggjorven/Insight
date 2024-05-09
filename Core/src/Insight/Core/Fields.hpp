@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Insight/Core/If.hpp>
+#include <Insight/Core/Help.hpp>
 #include <Insight/Core/Class.hpp>
 #include <Insight/Core/Variables.hpp>
-#include <Insight/Core/Functions.hpp>
 
 #define INSIGHT_PRIVATE 1
 #define INSIGHT_PUBLIC 0
