@@ -4,26 +4,22 @@
 #include <Insight/Core/Help.hpp>
 #include <Insight/Core/Class.hpp>
 #include <Insight/Core/Variables.hpp>
+#include <Insight/Core/Attributes.hpp>
 
-#define INSIGHT_PRIVATE 1
-#define INSIGHT_PUBLIC 0
-
-
+#define INSIGHT_private 1
+#define INSIGHT_public 0
 
 // Used for all field functions
-#define INSIGHT_FIELD_GENERIC(cls, type, name, value) \
-type name = value; \
-RUN_FUNCTION_NN(INSIGHT_CONC(name, cls), Insight::Internal::ClassSymbols.AddVariable, #cls, Insight::Internal::Variable::Create<type>(#name))
-
-// Export functions
-#if INSIGHT_EXPORT_CLASSES
-#define INSIGHT_PUBLIC_FIELD(cls, type, name, value) \
-public: \
-INSIGHT_FIELD_GENERIC(cls, type, name, value)
-
-#define INSIGHT_PRIVATE_FIELD(cls, type, name, value) \
+#define INSIGHT_FIELD_GENERIC(cls, type, name) \
 private: \
-INSIGHT_FIELD_GENERIC(cls, type, name, value) \
+RUN_FUNCTION_NN(INSIGHT_CONC(name, cls), Insight::Internal::ClassSymbols.AddVariable, #cls, Insight::Internal::VariableInfo::Create<type>(#name))
+
+#define INSIGHT_PUBLIC_FIELD(cls, type, name) \
+INSIGHT_FIELD_GENERIC(cls, type, name) \
+public: 
+
+#define INSIGHT_PRIVATE_FIELD(cls, type, name) \
+INSIGHT_FIELD_GENERIC(cls, type, name) \
 public: \
 type Get##name() \
 { \
@@ -35,21 +31,14 @@ void Set##name(type val) \
 } \
 private:
 
-// Regular functions
-#else
-#define INSIGHT_PUBLIC_FIELD(cls, type, name, value) \
-public: \
-INSIGHT_FIELD_GENERIC(cls, type, name, value)
 
-#define INSIGHT_PRIVATE_FIELD(cls, type, name, value) \
-private: \
-INSIGHT_FIELD_GENERIC(cls, type, name, value)
+// Note(Jorben): Only supports public/private vars
+#define ExportField(access, cls, type, name) Insight::Empty INSIGHT_CONC(InsightExportVarAttr, __COUNTER__) = {}; \
+INSIGHT_IF(INSIGHT_CONC(INSIGHT, access), INSIGHT_PUBLIC_FIELD(cls, type, name), INSIGHT_PRIVATE_FIELD(cls, type, name)) \
+[[
 
-#endif
 
-#define INSIGHT_FIELD(access, cls, type, name, value) \
-INSIGHT_IF(access, INSIGHT_PUBLIC_FIELD(cls, type, name, value), INSIGHT_PRIVATE_FIELD(cls, type, name, value)) \
-REQUIRE_SEMICOLON(INSIGHT_CONC(cls##type##name, __COUNTER__))
+
 
 
 #define INSIGHT_PUBLIC_FIELD_EXPORT(cls, type, name) \
@@ -78,12 +67,6 @@ EXPORT void Insight_Set##name##cls(cls* instance, type val) \
 } \
 }
 
-#if INSIGHT_EXPORT_CLASSES
-#define INSIGHT_FIELD_EXPORT(access, cls, type, name) \
-INSIGHT_IF(access, INSIGHT_PUBLIC_FIELD_EXPORT(cls, type, name), INSIGHT_PRIVATE_FIELD_EXPORT(cls, type, name)) \
-REQUIRE_SEMICOLON(INSIGHT_CONC(cls##type##name, __COUNTER__))
-
-#else // Don't do anything if exporting is disabled
-#define INSIGHT_FIELD_EXPORT(access, cls, type, name)
-
-#endif
+#define InsightExportField(access, cls, type, name) \
+INSIGHT_IF(INSIGHT_CONC(INSIGHT, access), INSIGHT_PUBLIC_FIELD_EXPORT(cls, type, name), INSIGHT_PRIVATE_FIELD_EXPORT(cls, type, name)) \
+REQUIRE_SEMICOLON(INSIGHT_CONC(cls, name))

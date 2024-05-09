@@ -40,7 +40,6 @@ group "Core"
 group ""
 
 group "Examples"
-	include "Examples/Core"
 	include "Examples/Dll"
 	include "Examples/Main"
 group ""

@@ -34,19 +34,19 @@ namespace Insight
     {
     public:
         OpaqueVariable() = default;
-        OpaqueVariable(const Internal::Variable& var, void* instance, SetDefaultFn setter, GetDefaultFn getter)
+        OpaqueVariable(const Internal::VariableInfo& var, void* instance, SetDefaultFn setter, GetDefaultFn getter)
             : m_Variable(var), m_Instance(instance), m_Setter(setter), m_Getter(getter)
         {
         }
         virtual ~OpaqueVariable() = default;
 
-        inline Internal::Variable& GetVariableInfo() { return m_Variable; }
+        inline Internal::VariableInfo& GetVariableInfo() { return m_Variable; }
         inline void*& GetInstance() { return m_Instance; }
         inline SetDefaultFn& GetSetter() { return m_Setter; }
         inline GetDefaultFn& GetGetter() { return m_Getter; }
 
     private:
-        Internal::Variable m_Variable = {};
+        Internal::VariableInfo m_Variable = {};
         void* m_Instance = nullptr;
         
         SetDefaultFn m_Setter = nullptr;
@@ -58,7 +58,7 @@ namespace Insight
     {
     public:
         Variable() = default;
-        Variable(const Internal::Variable& var, void* instance, void (*setter)(void*, T), T (*getter)(void*))
+        Variable(const Internal::VariableInfo& var, void* instance, void (*setter)(void*, T), T (*getter)(void*))
             : m_Variable(var), m_Instance(instance), m_Setter(setter), m_Getter(getter)
         {
         }
@@ -75,10 +75,10 @@ namespace Insight
             return m_Getter(m_Instance);
         }
 
-        inline Internal::Variable& GetVariableInfo() { return m_Variable; }
+        inline Internal::VariableInfo& GetVariableInfo() { return m_Variable; }
 
     private:
-        Internal::Variable m_Variable = {};
+        Internal::VariableInfo m_Variable = {};
         void* m_Instance = nullptr;
 
         void (*m_Setter)(void*, T) = nullptr;
@@ -93,7 +93,7 @@ namespace Insight
     { \
     public: \
         Variable() = default; \
-        Variable(const Internal::Variable& var, void* instance, Set##type##Fn setter, Get##type##Fn getter) \
+        Variable(const Internal::VariableInfo& var, void* instance, Set##type##Fn setter, Get##type##Fn getter) \
             : m_Variable(var), m_Instance(instance), m_Setter(setter), m_Getter(getter) \
         { \
         } \
@@ -110,10 +110,10 @@ namespace Insight
             return m_Getter(m_Instance); \
         } \
         \
-        inline Internal::Variable& GetVariableInfo() { return m_Variable; } \
+        inline Internal::VariableInfo& GetVariableInfo() { return m_Variable; } \
         \
     private: \
-        Internal::Variable m_Variable = {}; \
+        Internal::VariableInfo m_Variable = {}; \
         void* m_Instance = nullptr; \
         \
         Set##type##Fn m_Setter = nullptr; \
@@ -130,7 +130,7 @@ namespace Insight
     { \
     public: \
         Variable() = default; \
-        Variable(const Internal::Variable& var, void* instance, void (*setter)(void*, type), type (*getter)(void*)) \
+        Variable(const Internal::VariableInfo& var, void* instance, void (*setter)(void*, type), type (*getter)(void*)) \
             : m_Variable(var), m_Instance(instance), m_Setter(setter), m_Getter(getter) \
         { \
         } \
@@ -147,9 +147,10 @@ namespace Insight
             return Getter(m_Instance); \
         } \
         \
-        inline Internal::Variable& GetVariableInfo() { return m_Variable; } \
+        inline Internal::VariableInfo& GetVariableInfo() { return m_Variable; } \
         \
     private: \
+        Internal::VariableInfo m_Variable = {}; \
         void* m_Instance = nullptr; \
         \
         void (*m_Setter)(void*, type) = nullptr; \
@@ -172,6 +173,8 @@ namespace Insight
 
         void Add(OpaqueVariable var);
         void Add(const std::vector<OpaqueVariable> vars);
+
+        void PrintInfo();
 
         INSIGHT_DECL_VARIABLE(Char);
         INSIGHT_DECL_VARIABLE(SChar);

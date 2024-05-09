@@ -27,14 +27,12 @@ project "Dll"
 		"src",
 		"%{wks.location}/vendor",
 
-		"%{wks.location}/Core/src",
-
-		"%{wks.location}/Examples/Core/src"
+		"%{wks.location}/Core/src"
 	}
 
 	links
 	{
-		"Core"
+		"Insight"
 	}
 
 	disablewarnings

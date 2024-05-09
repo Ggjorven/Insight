@@ -27,21 +27,19 @@ project "Main"
 		"src",
 		"%{wks.location}/vendor",
 
-		"%{wks.location}/Core/src",
+		"%{wks.location}/Core/src"
+	}
 
-		"%{wks.location}/Examples/Core/src"
+	links
+	{
+		"Insight",
+		"Dll"
 	}
 
 	disablewarnings
 	{
 		"4005",
 		"4996"
-	}
-
-	links
-	{
-		"Core",
-		"Dll"
 	}
 
 	filter "system:windows"

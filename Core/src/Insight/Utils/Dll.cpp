@@ -82,7 +82,7 @@ namespace Insight
 		std::vector<OpaqueVariable> vars = { };
 
 		std::string fnName = std::string("Empty");
-		for (auto& var : m_Classes.GetClasses()[className])
+		for (auto& var : m_Classes.GetClasses()[className].Variables)
 		{
 			OpaqueVariable& newVar = vars.emplace_back();
 			newVar.GetInstance() = classInstance;

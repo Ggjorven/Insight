@@ -42,4 +42,27 @@ namespace Insight
 			Add(var);
 	}
 
+	void DefaultVariableCollection::PrintInfo()
+	{
+		#define INSIGHT_PRINT(type) \
+		for (auto& type##var : type##s) \
+			std::cout << "Variable by name \'" << type##var.GetVariableInfo().Name << "\' (" << #type << ") found." << std::endl;
+
+		INSIGHT_PRINT(Char);
+		INSIGHT_PRINT(SChar);
+		INSIGHT_PRINT(UChar);
+		INSIGHT_PRINT(Short);
+		INSIGHT_PRINT(UShort);
+		INSIGHT_PRINT(Int);
+		INSIGHT_PRINT(UInt);
+		INSIGHT_PRINT(Long);
+		INSIGHT_PRINT(ULong);
+		INSIGHT_PRINT(LongLong);
+		INSIGHT_PRINT(ULongLong);
+		INSIGHT_PRINT(Float);
+		INSIGHT_PRINT(Double);
+		INSIGHT_PRINT(LongDouble);
+		INSIGHT_PRINT(Bool);
+	}
+
 }

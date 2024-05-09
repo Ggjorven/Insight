@@ -8,6 +8,7 @@
 #include <Insight/Core/Fields.hpp>
 
 #include <Insight/Utils/Variables.hpp>
+#include <Insight/Utils/Functions.hpp>
 
 #if defined(APP_PLATFORM_WINDOWS)
 #include <Windows.h>
@@ -39,6 +40,12 @@ namespace Insight
 		inline Internal::Classes& GetClasses() { return m_Classes; }
 
 		std::vector<OpaqueVariable> GetVariables(const std::string& className, void* classInstance);
+		
+		template <typename TFunc>
+		inline TFunc GetCustomFunction(const std::string& cFuncName)
+		{
+			return (TFunc)GetProcAddress(m_Handle, cFuncName.c_str());
+		}
 
 	private:
 		HMODULE m_Handle = {};

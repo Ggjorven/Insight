@@ -63,3 +63,8 @@ struct id \
 
 #define STR_HELPER(str) #str
 #define STRINGIFY(str) STR_HELPER(str)
+
+namespace Insight
+{
+	typedef char Empty;
+}
